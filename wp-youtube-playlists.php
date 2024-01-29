@@ -51,16 +51,11 @@ if( !defined( 'HTTFOX_WYP_DIR_URL' ) ){
 
 // Config admin
 if( is_admin() ){
-
-  /*
-   * BEGIN -> Section to import resources
-   */
-
   // Function to add the link directing to the settings in the "plugins" tab
   require_once HTTFOX_WYP_DIR . '/includes/config/settings-link.php';
-
+  
+  // Create admin menu
   require_once HTTFOX_WYP_DIR . '/includes/config/create-admin-menu.php';
-
 }
 
 ?>
