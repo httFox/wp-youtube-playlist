@@ -57,9 +57,9 @@ if( is_admin() ){
    */
 
   // Function to add the link directing to the settings in the "plugins" tab
-  require_once HTTFOX_WYP_DIR . '/admin/includes/config/settings-link.php';
+  require_once HTTFOX_WYP_DIR . '/includes/config/settings-link.php';
 
-  require_once HTTFOX_WYP_DIR . '/admin/includes/config/create-admin-menu.php';
+  require_once HTTFOX_WYP_DIR . '/includes/config/create-admin-menu.php';
 
 }
 
