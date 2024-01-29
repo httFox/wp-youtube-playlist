@@ -55,7 +55,7 @@ if( is_admin() ){
   require_once HTTFOX_WYP_DIR . '/includes/config/settings-link.php';
   
   // Create admin menu
-  require_once HTTFOX_WYP_DIR . '/includes/config/create-admin-menu.php';
+  require_once HTTFOX_WYP_DIR . '/includes/admin/create-admin-menu.php';
 }
 
 ?>
