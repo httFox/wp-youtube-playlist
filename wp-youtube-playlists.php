@@ -73,11 +73,22 @@ if( is_admin() ){
 }
 // END -> Configs
 
+
+
 /*
  * BEGIN -> Endpoints
  * @ code run
  */
 require_once HTTFOX_WYP_DIR . '/includes/config/endpoints/playlist-get.php';
 // END -> endpoints
+
+
+
+/*
+ * BEGIN -> Shortcodes
+ * @ code run
+ */
+require_once HTTFOX_WYP_DIR . '/includes/config/shortcodes/load-playlist.php';
+// END -> Shortcodes
 
 ?>
