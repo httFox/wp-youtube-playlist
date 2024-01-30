@@ -2,6 +2,7 @@
 
 function httfox_wyp_api_google_youtube_playlist_get($request) {
   $playlist_id = sanitize_text_field($request['playlist_id']);
+  $page_token = sanitize_text_field($request['page_token']);
   $itens_per_page = !empty($request['itens_per_page']) ? absint($request['itens_per_page']) : 9;
   $key = get_option(HTTFOX_WYP_SLUG_DB)[HTTFOX_WYP_API_KEY_SLUG];
 
@@ -14,14 +15,15 @@ function httfox_wyp_api_google_youtube_playlist_get($request) {
   }
 
   // Construa a URL da API usando a função http_build_query
-  $api_url = add_query_arg(
-    [
-      'maxResults' => $itens_per_page,
-      'playlistId' => $playlist_id,
-      'key' => $key
-    ],
-    HTTFOX_WYP_GOOGLE_APIS_YOUTUBE_PLAYLISTS
-  );
+  $config_args = [
+    'maxResults' => $itens_per_page,
+    'playlistId' => $playlist_id,
+    'key' => $key
+  ];
+
+  if (!empty($page_token)) $config_args['pageToken'] = $page_token;
+
+  $api_url = add_query_arg($config_args, HTTFOX_WYP_GOOGLE_APIS_YOUTUBE_PLAYLISTS);
 
   $curl = curl_init();
 
