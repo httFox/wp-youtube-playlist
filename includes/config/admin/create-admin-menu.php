@@ -32,7 +32,7 @@ add_action('admin_menu', 'httfox_wyp_settings_menu_item');
 
 function httfox_wyp_render_field() {
   $httfox_wyp_options = get_option(HTTFOX_WYP_SLUG_DB);
-  $value = isset($httfox_wyp_options['api_key']) ? esc_attr($httfox_wyp_options['api_key']) : '';
+  $value = isset($httfox_wyp_options[HTTFOX_WYP_API_KEY_SLUG]) ? esc_attr($httfox_wyp_options[HTTFOX_WYP_API_KEY_SLUG]) : '';
 
   ?>
     <input
@@ -48,8 +48,8 @@ function httfox_wyp_render_field() {
 function httfox_wyp_admin_fields_sanitize( $input ) {
   $new_input = array();
 
-  if (isset($input['api_key'])) {
-    $new_input['api_key'] = sanitize_text_field( $input['api_key'] );
+  if (isset($input[HTTFOX_WYP_API_KEY_SLUG])) {
+    $new_input[HTTFOX_WYP_API_KEY_SLUG] = sanitize_text_field( $input[HTTFOX_WYP_API_KEY_SLUG] );
   }
 
   return $new_input;
@@ -67,7 +67,7 @@ function httfox_wyp_add_fields() {
   );
 
   add_settings_field(
-    'api_key',
+    HTTFOX_WYP_API_KEY_SLUG,
     'API Key',
     'httfox_wyp_render_field',
     HTTFOX_WYP_SLUG,
