@@ -20,17 +20,23 @@ function httfox_wyp_create_shortcode_load($atts) {
   // Default itens
   $short_atts = shortcode_atts(
     [
-      'max_return' => 9,
-      'columns' => '1fr 1fr',
+      'max_return' => 50,
+      'columns' => 2,
       'display' => 'grid',
-      'gap' => '20px'
+      'gap' => '20px',
+      'title_tag' => 'p',
+      'video_prop_height' => 9,
+      'video_prop_width' => 16
     ],
     $atts
   );
 
   // Format items
   $itens_per_page = absint($short_atts['max_return']);
-  $columns = sanitize_text_field($short_atts['columns']);
+  $columns = absint($short_atts['columns']);
+  $video_prop_height = absint($short_atts['video_prop_height']);
+  $video_prop_width = absint($short_atts['video_prop_width']);
+  $title_tag = sanitize_text_field($short_atts['title_tag']);
   $gap = sanitize_text_field($short_atts['gap']);
   $display = sanitize_text_field($short_atts['display']);
   $playlist_id = !empty($atts['playlist_id']) ? sanitize_text_field($atts['playlist_id']) : null;
@@ -55,6 +61,9 @@ function httfox_wyp_create_shortcode_load($atts) {
   // Localize o script com os parâmetros
   wp_localize_script($script_name, 'httfox_wyp_id_box', $html_id_box);
   wp_localize_script($script_name, 'httfox_wyp_class_container', $html_class_container);
+  wp_localize_script($script_name, 'httfox_wyp_tag_title', $title_tag);
+  wp_localize_script($script_name, 'httfox_wyp_prop_height', $video_prop_height);
+  wp_localize_script($script_name, 'httfox_wyp_prop_width', $video_prop_width);
   
   wp_localize_script($script_name, 'httfox_wyp_url_fetch', rest_url() . HTTFOX_WYP_API_VERSION_V1 . '/youtube/playlist');
   wp_localize_script($script_name, 'httfox_wyp_data', $script_params);

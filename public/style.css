@@ -1,5 +1,75 @@
 .httfox-wyp-container {
+  margin: 0;
+  list-style: none;
   display: var(--httfox-wyp-display);
   gap: var(--httfox-wyp-gap);
-  grid-template-columns: var(--httfox-wyp-columns);
+  grid-template-columns: repeat(var(--httfox-wyp-columns), 1fr);
+}
+
+@media only screen and (max-width: 720px) {
+  .httfox-wyp-container {
+    grid-template-columns: 1fr;
+  }
+}
+
+.httfox-wyp-container-item {
+  margin: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.httfox-wyp-item-title {
+  padding: 0 12px;
+}
+
+.httfox-wyp-item-image {
+  position: relative;
+}
+
+.httfox-wyp-item-image img {
+  width: 100%;
+  max-width: 100%;
+  object-fit: cover;
+}
+
+.httfox-wyp-item-player-box {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.httfox-wyp-item-player {
+  --dimensions: 4.5rem;
+  height: var(--dimensions);
+  width: var(--dimensions);
+  border-radius: 50%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: 0.3s;
+  cursor: pointer;
+}
+
+.httfox-wyp-item-player:hover {
+  transform: scale(1.2);
+}
+
+.httfox-wyp-item-player-arrow {
+  --border-height: 0.7rem;
+  --border-width: 1rem;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-radius: 0.125rem;
+  border-width: var(--border-height) 0 var(--border-height) var(--border-width);
+  border-color: transparent transparent transparent #fff;
+  cursor: pointer;
 }

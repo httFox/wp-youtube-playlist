@@ -3,6 +3,15 @@
   const paramsFetch = httfox_wyp_data // setado pelo arquivo de shortcode
   const id_Box = httfox_wyp_id_box // setado pelo arquivo de shortcode
   const class_container = httfox_wyp_class_container // setado pelo arquivo de shortcode
+  const tag_title = httfox_wyp_tag_title // setado pelo arquivo de shortcode
+  const prop_height = httfox_wyp_prop_height // setado pelo arquivo de shortcode
+  const prop_width = httfox_wyp_prop_width // setado pelo arquivo de shortcode
+  const class_item = 'httfox-wyp-item';
+  const class_itemTitle = 'httfox-wyp-item-title';
+  const class_itemImg = 'httfox-wyp-item-image';
+  const class_itemPlayerBox = 'httfox-wyp-item-player-box';
+  const class_itemPlayer = 'httfox-wyp-item-player';
+  const class_itemPlayerArrow = 'httfox-wyp-item-player-arrow';
   
   if (!urlFetch || !paramsFetch) return;
   
@@ -43,40 +52,66 @@
     return newUrl;
   }
 
+  function adjustHeightTo16by9(selectorToElementObserver) {
+    const containers = document.querySelectorAll(`.${class_item}`);
+
+    containers.forEach(function (container) {
+      const iframe = container.querySelector(selectorToElementObserver);
+
+      if (container && iframe) {
+        const containerWidth = container.offsetWidth;
+        const desiredHeight = (containerWidth * prop_height) / prop_width;
+
+        iframe.style.height = desiredHeight + 'px';
+      }
+    });
+  }
+
   async function addVideos() {
-    
     const outputBox = document.getElementById(id_Box);
     if (!outputBox) return;
     
     let container = outputBox.querySelector(`.${class_container}`);
     
     if (!container) {
-      outputBox.insertAdjacentHTML('afterbegin', `<ul class="${class_container}">Testee</ul>`);
+      outputBox.insertAdjacentHTML('beforeend', `<ul class="${class_container}"></ul>`);
       container = outputBox.querySelector(`.${class_container}`);
     }
     
 
     const data = await getPlaylist();
-    console.log(data);
 
     data.items.forEach(element => {
       const id = element.snippet.resourceId.videoId || null;
+      const title = element.snippet.title || null;
+      const thumbDefault = element.snippet.thumbnails.default || null;
+      
+      if (!id || !title || !thumbDefault) return;
 
-      if (id) {
-        const content = `
-          <iframe 
-            id="player" 
-            type="text/html" 
-            width="640" 
-            height="360"
-            src="https://www.youtube.com/embed/${id}"
-            frameborder="0">
-          </iframe>
-        `;
-  
-        container.insertAdjacentHTML('afterbegin', content);
-      }
+      const thumb = element.snippet.thumbnails || null;
+
+      const content = `
+      <li class="${class_item}">
+        <div class="${class_itemImg}">
+          <img src="${thumb.high.url}" alt="${title}" />
+          <div class="${class_itemPlayerBox}">
+            <span class="${class_itemPlayer}">
+              <span class="${class_itemPlayerArrow}"></span>
+            </span>
+          </div>
+        </div>
+        <${tag_title} class="${class_itemTitle}">${title}</${tag_title}>
+      </li>
+      `;
+
+      container.insertAdjacentHTML('beforeend', content);
     });
+
+    // Chamando a função ao carregar a página
+    adjustHeightTo16by9(`.${class_itemImg} img`);
+
+    // Chamando a função ao redimensionar a janela
+    window.addEventListener('resize', () => adjustHeightTo16by9(`.${class_itemImg} img`));
   }
 
   addVideos();
