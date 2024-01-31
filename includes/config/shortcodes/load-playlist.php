@@ -1,14 +1,38 @@
 <?php
 
+function httfox_wyp_generate_custom_css($vars, $slug = null) {
+  $css = '';
+
+  $slug = !empty($slug) ? "--$slug-" : '--';
+
+  $css .= ":root {\n";
+
+  foreach ($vars as $property => $value) {
+    $css .= " $slug$property: $value;\n";
+  }
+
+  $css .= "}\n";
+
+  return $css;
+}
+
 function httfox_wyp_create_shortcode_load($atts) {
   // Default itens
   $short_atts = shortcode_atts(
-    ['max_return' => 9],
+    [
+      'max_return' => 9,
+      'columns' => '1fr 1fr',
+      'display' => 'grid',
+      'gap' => '20px'
+    ],
     $atts
   );
 
   // Format items
   $itens_per_page = absint($short_atts['max_return']);
+  $columns = sanitize_text_field($short_atts['columns']);
+  $gap = sanitize_text_field($short_atts['gap']);
+  $display = sanitize_text_field($short_atts['display']);
   $playlist_id = !empty($atts['playlist_id']) ? sanitize_text_field($atts['playlist_id']) : null;
 
   // Validate items
@@ -21,7 +45,7 @@ function httfox_wyp_create_shortcode_load($atts) {
   // Define os parâmetros que você deseja passar para o script
   $script_params = array(
     'playlist_id' => $playlist_id,
-    'itens_per_page' => $itens_per_page,
+    'itens_per_page' => $itens_per_page
   );
 
   // Define IDs and Classes html
@@ -35,6 +59,18 @@ function httfox_wyp_create_shortcode_load($atts) {
   wp_localize_script($script_name, 'httfox_wyp_url_fetch', rest_url() . HTTFOX_WYP_API_VERSION_V1 . '/youtube/playlist');
   wp_localize_script($script_name, 'httfox_wyp_data', $script_params);
 
+  // Adiciona a folha de estilo ao WordPress
+  wp_enqueue_style('httfox-wyp-style', HTTFOX_WYP_DIR_URL . 'public/style.css');
+
+  // Define as variáveis que deseja passar para o CSS
+  $custom_css_vars = array(
+    'display' => $display,
+    'columns' => $columns,
+    'gap' => $gap
+  );
+
+  // Adiciona as variáveis como estilos CSS personalizados
+  wp_add_inline_style('httfox-wyp-style', httfox_wyp_generate_custom_css($custom_css_vars, 'httfox-wyp'));
   // Output html
   return "<div id='$html_id_box'><ul class='$html_class_container'></ul></div>";
 }

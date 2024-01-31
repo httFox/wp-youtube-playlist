@@ -1,0 +1,5 @@
+.httfox-wyp-container {
+  display: var(--httfox-wyp-display);
+  gap: var(--httfox-wyp-gap);
+  grid-template-columns: var(--httfox-wyp-columns);
+}
