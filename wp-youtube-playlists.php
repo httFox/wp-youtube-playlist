@@ -64,9 +64,6 @@ if( !defined( 'HTTFOX_WYP_GOOGLE_APIS_YOUTUBE_PLAYLISTS' ) ){
   define( 'HTTFOX_WYP_GOOGLE_APIS_YOUTUBE_PLAYLISTS', 'https://www.googleapis.com/youtube/v3/playlistItems' );
 }
 
-if( !defined( 'HTTFOX_WYP_GOOGLE_APIS_YOUTUBE_VIDEOS' ) ){
-  define( 'HTTFOX_WYP_GOOGLE_APIS_YOUTUBE_VIDEOS', 'https://www.googleapis.com/youtube/v3/videos' );
-}
 
 /*
  * BEGIN -> Configs
