@@ -16,6 +16,7 @@ function httfox_wyp_api_google_youtube_playlist_get($request) {
 
   // Construa a URL da API usando a função http_build_query
   $config_args = [
+    'part' => 'snippet',
     'maxResults' => $itens_per_page,
     'playlistId' => $playlist_id,
     'key' => $key
