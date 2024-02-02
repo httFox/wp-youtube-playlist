@@ -60,6 +60,10 @@ if( !defined( 'HTTFOX_WYP_API_DATA_SLUG' ) ){
   define( 'HTTFOX_WYP_API_DATA_SLUG', 'api_data' );
 }
 
+if( !defined( 'HTTFOX_WYP_API_CACHE_SLUG' ) ){
+  define( 'HTTFOX_WYP_API_CACHE_SLUG', 'api_cache' );
+}
+
 if( !defined( 'HTTFOX_WYP_GOOGLE_APIS_YOUTUBE_PLAYLISTS' ) ){
   define( 'HTTFOX_WYP_GOOGLE_APIS_YOUTUBE_PLAYLISTS', 'https://www.googleapis.com/youtube/v3/playlistItems' );
 }

@@ -1,20 +1,7 @@
 <?php
 
-function httfox_wyp_generate_custom_css($vars, $slug = null) {
-  $css = '';
-
-  $slug = !empty($slug) ? "--$slug-" : '--';
-
-  $css .= ":root {\n";
-
-  foreach ($vars as $property => $value) {
-    $css .= " $slug$property: $value;\n";
-  }
-
-  $css .= "}\n";
-
-  return $css;
-}
+require_once(HTTFOX_WYP_DIR . '/includes/helps/generate-custom-css-root.php');
+require_once(HTTFOX_WYP_DIR . '/includes/helps/get-playlist-data.php');
 
 function httfox_wyp_create_shortcode_load($atts) {
   // Default itens
@@ -32,56 +19,63 @@ function httfox_wyp_create_shortcode_load($atts) {
   );
 
   // Format items
+  $root_id = 'httfox-wyp-root';
+  
+  $playlist_id = !empty($atts['playlist_id']) ? sanitize_text_field($atts['playlist_id']) : null;
   $itens_per_page = absint($short_atts['max_return']);
-  $columns = absint($short_atts['columns']);
+
   $video_prop_height = absint($short_atts['video_prop_height']);
   $video_prop_width = absint($short_atts['video_prop_width']);
   $title_tag = sanitize_text_field($short_atts['title_tag']);
-  $gap = sanitize_text_field($short_atts['gap']);
+
   $display = sanitize_text_field($short_atts['display']);
-  $playlist_id = !empty($atts['playlist_id']) ? sanitize_text_field($atts['playlist_id']) : null;
+  $gap = sanitize_text_field($short_atts['gap']);
+  $columns = absint($short_atts['columns']);
+
 
   // Validate items
-  if (!$playlist_id) return '<p>Erro: ID da playlist não adicionado!</p>';
-
-  // Enqueue script
-  $script_name = 'httfox-wyp-add-list';
-  wp_enqueue_script($script_name, HTTFOX_WYP_DIR_URL . 'public/script.js', array(), '1.0', true);
-
-  // Define os parâmetros que você deseja passar para o script
-  $script_params = array(
-    'playlist_id' => $playlist_id,
-    'itens_per_page' => $itens_per_page
-  );
-
-  // Define IDs and Classes html
-  $html_id_box = 'httfox-wyp-box';
-  $html_class_container = 'httfox-wyp-container';
-
-  // Localize o script com os parâmetros
-  wp_localize_script($script_name, 'httfox_wyp_id_box', $html_id_box);
-  wp_localize_script($script_name, 'httfox_wyp_class_container', $html_class_container);
-  wp_localize_script($script_name, 'httfox_wyp_tag_title', $title_tag);
-  wp_localize_script($script_name, 'httfox_wyp_prop_height', $video_prop_height);
-  wp_localize_script($script_name, 'httfox_wyp_prop_width', $video_prop_width);
-  
-  wp_localize_script($script_name, 'httfox_wyp_url_fetch', rest_url() . HTTFOX_WYP_API_VERSION_V1 . '/youtube/playlist');
-  wp_localize_script($script_name, 'httfox_wyp_data', $script_params);
+  if (!$playlist_id) return;
 
   // Adiciona a folha de estilo ao WordPress
-  wp_enqueue_style('httfox-wyp-style', HTTFOX_WYP_DIR_URL . 'public/style.css');
+  $style_general = 'httfox-wyp-style';
+  wp_enqueue_style($style_general, HTTFOX_WYP_DIR_URL . 'public/style.css');
 
-  // Define as variáveis que deseja passar para o CSS
   $custom_css_vars = array(
     'display' => $display,
     'columns' => $columns,
     'gap' => $gap
   );
 
-  // Adiciona as variáveis como estilos CSS personalizados
-  wp_add_inline_style('httfox-wyp-style', httfox_wyp_generate_custom_css($custom_css_vars, 'httfox-wyp'));
-  // Output html
-  return "<div id='$html_id_box'><ul class='$html_class_container'></ul></div>";
+  wp_add_inline_style($style_general, httfox_wyp_generate_custom_css($custom_css_vars, 'httfox-wyp'));
+  
+  
+  // Enqueue scripts
+  $script_youtube_api = 'httfox-wyp-youtube-api';
+  wp_enqueue_script('youtube-api', 'https://www.youtube.com/iframe_api', array(), null, true);
+
+  wp_enqueue_script('httfox-wyp-script-resize', HTTFOX_WYP_DIR_URL . 'public/js/helps/resize-props-elements.js', array(), '1.1', true);
+  wp_enqueue_script('httfox-wyp-script-gerency-popups', HTTFOX_WYP_DIR_URL . 'public/js/helps/gerency-popups.js', array(), '1.1', true);
+
+  // $script_resize_use_name = 'httfox-wyp-script-resize-use';
+  // wp_enqueue_script($script_resize_use_name, HTTFOX_WYP_DIR_URL . 'public/js/resize-props-elements-use-shortcode.js', array(), '1.2', false);
+
+  $script_general = 'httfox-wyp-script';
+  wp_enqueue_script($script_general, HTTFOX_WYP_DIR_URL . 'public/js/httfox-wyp.js', array(), '2.0', false);
+  
+  $localization_params = array(
+    'root' => $root_id,
+    'url_fetch' => rest_url() . HTTFOX_WYP_API_VERSION_V1 . '/youtube/playlist',
+    'hash_fetch' => array('playlist_id' => $playlist_id, 'itens_per_page' => $itens_per_page),
+    'prop_width' => $video_prop_width,
+    'prop_height' => $video_prop_height,
+    'title_tag' => $title_tag,
+  );
+
+  // Localize o script com os parâmetros
+  wp_localize_script($script_general, 'httfox_wyp_params', $localization_params);
+  
+  
+  return "<div id='$root_id'></div>";
 }
 
 add_shortcode('httFox_wtp_load', 'httfox_wyp_create_shortcode_load');

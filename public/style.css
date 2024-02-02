@@ -22,13 +22,15 @@
 
 .httfox-wyp-item-title {
   padding: 0 12px;
+  display: block;
+  cursor: default;
 }
 
-.httfox-wyp-item-image {
+.httfox-wyp-item-image-box {
   position: relative;
 }
 
-.httfox-wyp-item-image img {
+.httfox-wyp-item-image {
   width: 100%;
   max-width: 100%;
   object-fit: cover;
@@ -72,4 +74,41 @@
   border-width: var(--border-height) 0 var(--border-height) var(--border-width);
   border-color: transparent transparent transparent #fff;
   cursor: pointer;
+}
+
+
+
+.httfox-popup-background {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999999;
+}
+
+.httfox-popup-container {
+  max-width: 900px;
+  width: 90%;
+  position: relative;
+}
+
+.httfox-popup-close {
+  --dimensions: 2rem;
+  position: absolute;
+  top: calc((var(--dimensions) - 5px) * -1);
+  right: calc((var(--dimensions) - 5px) * -1);
+  width: var(--dimensions);
+  height: var(--dimensions);
+  border-radius: 50%;
+  color: #fff;
+  background: transparent;
+  font-weight: 800;
+  font-size: 1rem;
+  padding: 0;
+  margin: 0;
 }

@@ -4,7 +4,8 @@ function httfox_wyp_api_google_youtube_playlist_get($request) {
   $playlist_id = sanitize_text_field($request['playlist_id']);
   $page_token = sanitize_text_field($request['page_token']);
   $itens_per_page = !empty($request['itens_per_page']) ? absint($request['itens_per_page']) : 50;
-  $key = get_option(HTTFOX_WYP_SLUG_DB)[HTTFOX_WYP_API_KEY_SLUG];
+  $options = get_option(HTTFOX_WYP_SLUG_DB, array()); // Retorna a tabela de dados em options
+  $key = $options[HTTFOX_WYP_API_KEY_SLUG];
 
   if (empty($key)) {
     return new WP_Error('error', 'API Key is undefined', ['status' => 401]);
@@ -43,9 +44,9 @@ function httfox_wyp_api_google_youtube_playlist_get($request) {
   ];
 
   curl_setopt_array($curl, $curl_args);
-
-  $response = json_decode(curl_exec($curl));
   
+  $response = json_decode(curl_exec($curl));
+
   // Verifica se ocorreu algum erro na execução da solicitação cURL
   if (curl_errno($curl)) {
     return new WP_Error('error', curl_error($curl), ['status' => 500]);
