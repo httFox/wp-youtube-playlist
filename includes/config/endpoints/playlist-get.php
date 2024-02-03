@@ -3,7 +3,7 @@
 function httfox_wyp_api_google_youtube_playlist_get($request) {
   $playlist_id = sanitize_text_field($request['playlist_id']);
   $page_token = sanitize_text_field($request['page_token']);
-  $itens_per_page = !empty($request['itens_per_page']) ? absint($request['itens_per_page']) : 50;
+  $itens_per_page = !empty($request['itens_per_page']) ? absint($request['itens_per_page']) : 9;
   $options = get_option(HTTFOX_WYP_SLUG_DB, array()); // Retorna a tabela de dados em options
   $key = $options[HTTFOX_WYP_API_KEY_SLUG];
 

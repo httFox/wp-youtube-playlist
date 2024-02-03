@@ -51,7 +51,7 @@ function httfox_wyp_render_field_cache() {
 
   ?>
     <input
-      type="number"
+      type="color"
       id="<?php echo HTTFOX_WYP_API_CACHE_SLUG;?>"
       name="<?php echo HTTFOX_WYP_SLUG_DB ?>[<?php echo HTTFOX_WYP_API_CACHE_SLUG;?>]"
       value="<?php echo $value; ?>"

@@ -4,6 +4,7 @@
   display: var(--httfox-wyp-display);
   gap: var(--httfox-wyp-gap);
   grid-template-columns: repeat(var(--httfox-wyp-columns), 1fr);
+  margin-bottom: 42px;
 }
 
 @media only screen and (max-width: 720px) {
@@ -111,4 +112,17 @@
   font-size: 1rem;
   padding: 0;
   margin: 0;
+}
+
+#httfox-wyp-button-show-more {
+  --color: #555;
+  --color-br: #fff;
+  margin: 0 auto;
+  display: block;
+  background-color: var(--color-br);
+  padding: 8px 20px;
+  border: 2px solid var(--color);
+  color: var(--color);
+  font-weight: 500;
+  cursor: pointer;
 }

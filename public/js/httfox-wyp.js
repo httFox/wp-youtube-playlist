@@ -6,9 +6,7 @@
   const propWidth = httfox_wyp_params.prop_width // setado pelo arquivo de shortcode
   const tagTitle = httfox_wyp_params.title_tag // setado pelo arquivo de shortcode
 
-  const id_popupBox = 'httfox-popup-box';
-  const id_containerPlayer = 'httfox-popup-container-player';
-
+  
   const class_container = 'httfox-wyp-container';
 
   const class_item = 'httfox-wyp-item';
@@ -24,7 +22,10 @@
   const class_popupContainer = 'httfox-popup-container';
   const class_popupContent = 'httfox-popup-content';
   const class_popupClose = 'httfox-popup-close';
-
+  
+  const id_popupBox = 'httfox-popup-box';
+  const id_containerPlayer = 'httfox-popup-container-player';
+  
   const tagDataSelectorId = 'data-id';
 
   const root = document.getElementById(rootId);
