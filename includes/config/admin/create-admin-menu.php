@@ -9,7 +9,7 @@ function httfox_wyp_render_settings_page() {
           <?php
             settings_fields(HTTFOX_WYP_SLUG_DB);
             do_settings_sections(HTTFOX_WYP_SLUG);
-            submit_button('Submit | Clean cache');
+            submit_button();
           ?>
         </form>
     </div>
@@ -45,20 +45,6 @@ function httfox_wyp_render_field_api_key() {
   <?php
 }
 
-function httfox_wyp_render_field_cache() {
-  $httfox_wyp_options = get_option(HTTFOX_WYP_SLUG_DB);
-  $value = isset($httfox_wyp_options[HTTFOX_WYP_API_CACHE_SLUG]) ? esc_attr($httfox_wyp_options[HTTFOX_WYP_API_CACHE_SLUG]) : '';
-
-  ?>
-    <input
-      type="color"
-      id="<?php echo HTTFOX_WYP_API_CACHE_SLUG;?>"
-      name="<?php echo HTTFOX_WYP_SLUG_DB ?>[<?php echo HTTFOX_WYP_API_CACHE_SLUG;?>]"
-      value="<?php echo $value; ?>"
-      class="regular-text"
-    />
-  <?php
-}
 
 function httfox_wyp_admin_fields_sanitize( $input ) {
   $new_input = array();
@@ -66,14 +52,6 @@ function httfox_wyp_admin_fields_sanitize( $input ) {
   if (isset($input[HTTFOX_WYP_API_KEY_SLUG])) {
     $new_input[HTTFOX_WYP_API_KEY_SLUG] = sanitize_text_field( $input[HTTFOX_WYP_API_KEY_SLUG] );
   }
-
-  if (isset($input[HTTFOX_WYP_API_CACHE_SLUG])) {
-    $new_input[HTTFOX_WYP_API_CACHE_SLUG] = sanitize_text_field( $input[HTTFOX_WYP_API_CACHE_SLUG] );
-  }
-
-  $options = get_option(HTTFOX_WYP_SLUG_DB, array()); // Retorna a tabela de dados em options
-  unset($options[HTTFOX_WYP_API_DATA_SLUG]);
-  update_option(HTTFOX_WYP_SLUG_DB, $options);
 
   return $new_input;
 }
@@ -93,14 +71,6 @@ function httfox_wyp_add_fields() {
     HTTFOX_WYP_API_KEY_SLUG,
     'API Key',
     'httfox_wyp_render_field_api_key',
-    HTTFOX_WYP_SLUG,
-    HTTFOX_WYP_SLUG_DB . '_sec1'
-  );
-
-  add_settings_field(
-    HTTFOX_WYP_API_CACHE_SLUG,
-    'Cache (hours)',
-    'httfox_wyp_render_field_cache',
     HTTFOX_WYP_SLUG,
     HTTFOX_WYP_SLUG_DB . '_sec1'
   );

@@ -76,7 +76,7 @@ function httfox_teste() {
         
             function onPlayerReady(event) {
               // Ajustar o volume para x%
-              event.target.setVolume(volume);
+              // event.target.setVolume(volume);
     
               // Inicie o vídeo automaticamente com som
               event.target.playVideo();

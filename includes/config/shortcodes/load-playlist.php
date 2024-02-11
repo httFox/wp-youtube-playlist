@@ -76,6 +76,8 @@ function httfox_wyp_create_shortcode_load($atts) {
   // Load first grid
   $data = json_decode(httfox_wyp_get_playlist_data($itens_per_page, $playlist_id));
 
+  if (empty($data->items)) return "Nenhum item encontrado";
+
   $output = '';
   foreach($data->items as $item) {
     $id = isset($item->snippet->resourceId->videoId) ? $item->snippet->resourceId->videoId : null;
@@ -102,8 +104,6 @@ function httfox_wyp_create_shortcode_load($atts) {
     }
   }
 
-  
-  
   // Enqueue scripts
   $script_youtube_api = 'httfox-wyp-youtube-api';
   wp_enqueue_script($script_youtube_api, 'https://www.youtube.com/iframe_api', array(), null, true);
@@ -120,14 +120,7 @@ function httfox_wyp_create_shortcode_load($atts) {
     'btn_view_more_text' => $btn_view_more_text,
     'prop_width' => $video_prop_width,
     'prop_height' => $video_prop_height,
-
     'resources' => $html_items,
-
-    // 'id_show_more' => $html_items['ids']['button_show_more'],
-    // 'class_box' => $html_items['class']['item'],
-    // 'class_element' => $html_items['class']['item_img'],
-    // 'data_set_id' => $html_items['tags']['data_set_id'],
-    // 'data_set_next_page' => $html_items['tags']['data_set_next_page'],
   );
   
   wp_localize_script($script_init_resize_elements, 'httfox_wyp_params', $args_init_resize);
@@ -136,27 +129,6 @@ function httfox_wyp_create_shortcode_load($atts) {
   $btn_show_more = !empty($next_page_token) ? "<button id='{$html_items['ids']['button_show_more']}' {$html_items['tags']['data_set_next_page']}=$next_page_token>$btn_view_more_text</button>" : '';
 
   return "<div id='{$html_items['ids']['root']}'><ul class='{$html_items['class']['container']}'>$output</ul>$btn_show_more</div>";
-  
-  // $script_resize_use_name = 'httfox-wyp-script-resize-use';
-  // wp_enqueue_script($script_resize_use_name, HTTFOX_WYP_DIR_URL . 'public/js/resize-props-elements-use-shortcode.js', array(), '1.2', false);
-
-  // $script_general = 'httfox-wyp-script';
-  // wp_enqueue_script($script_general, HTTFOX_WYP_DIR_URL . 'public/js/httfox-wyp.js', array(), '2.0', false);
-  
-  // $localization_params = array(
-  //   'root' => $root_id,
-  //   'url_fetch' => rest_url() . HTTFOX_WYP_API_VERSION_V1 . '/youtube/playlist',
-  //   'hash_fetch' => array('playlist_id' => $playlist_id, 'itens_per_page' => $itens_per_page),
-  //   'prop_width' => $video_prop_width,
-  //   'prop_height' => $video_prop_height,
-  //   'title_tag' => $title_tag,
-  // );
-
-  // // Localize o script com os parâmetros
-  // wp_localize_script($script_general, 'httfox_wyp_params', $localization_params);
-  
-  
-  return "<div id='$root_id'></div>";
 }
 
 add_shortcode('httFox_wtp_load', 'httfox_wyp_create_shortcode_load');
